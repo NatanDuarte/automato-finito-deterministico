@@ -1,5 +1,6 @@
 from automatoFinitoDeterministico import AutomatoFinitoDeterministico
 
+
 automato = AutomatoFinitoDeterministico(
     states=['q0', 'q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7', 'q8'],
     alphabet=['o', 's', 'á', 'b', 'e', 'i', 'u', 'c', 'r', 'v', 'j', 'a', ' '],
@@ -20,7 +21,10 @@ automato = AutomatoFinitoDeterministico(
 
 frase = "O sábio bebeu cerveja"
 
-if automato.run(frase):
+# Formatar a mensagem para reconhecer
+frase = automato.format_phrase(frase)
+
+if automato.recognize(frase):
     print(f'A frase "{frase}" foi reconhecida pelo autômato.')
 else:
     print(f'A frase "{frase}" não foi reconhecida pelo autômato.')
