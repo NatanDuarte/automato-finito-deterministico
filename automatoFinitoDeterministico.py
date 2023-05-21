@@ -1,7 +1,10 @@
 import unicodedata
+import nltk
+import re
 
-from nltk.stem import PorterStemmer
+from nltk.stem.snowball import SnowballStemmer
 
+nltk.download('punkt')
 
 class AutomatoFinitoDeterministico:
     def __init__(self, states:list, alphabet:list, 
@@ -24,9 +27,15 @@ class AutomatoFinitoDeterministico:
         return current_state in self.accept_states
 
     def format_phrase(self, phrase:str) -> str:
-        stemmer = PorterStemmer()
-        phrase = unicodedata.normalize('NFKD', phrase).encode('ASCII', 'ignore').decode('utf-8')
-        return ' '.join([stemmer.stem(word) for word in phrase.split(' ')]).lower().strip()
+        phrase = re.sub(r'[^\w\s]', '', phrase)
+        return unicodedata.normalize('NFKD', phrase).encode('ASCII', 'ignore').decode('utf-8').lower()
+
+    def applyStemmer(self, phrase:str) -> str:
+        stemmer = SnowballStemmer('portuguese')
+        words = []
+        for word in nltk.word_tokenize(phrase):
+            words.append(stemmer.stem(word))
+        return words
 
     def _contains_valid_transition(self, current_state:str, symbol) -> bool:
         return symbol not in self.transitions[current_state]
