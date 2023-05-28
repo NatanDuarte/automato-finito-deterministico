@@ -12,9 +12,8 @@ class Classifier:
     def classify(self):
         current_state = self.start_state
         classe = None
+        intention = None
         for token in self.tokens:
-
-            intention = None
             if token in classificacoes['artigo']:
                 classe = 'art'
             elif token in classificacoes['preposisoes']:
