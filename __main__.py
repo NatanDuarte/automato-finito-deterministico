@@ -1,8 +1,9 @@
 from DeterministicFiniteAutomaton import DeterministicFiniteAutomaton
+from classificador import Classifier
 
 from utils import *
 from data import *
-
+from data2 import *
 
 def main():
     automaton = DeterministicFiniteAutomaton(
@@ -24,9 +25,19 @@ def main():
             tokens = automaton.applyStemmer(phrase)
             print(f'tokens: {tokens}')
 
-            # TODO: reconhecer intenção
+            classifier = Classifier(
+                start_state=start_state2,
+                accept_states=accept_states2,
+                states=states2,
+                tokens=tokens,
+                transitions=transitions2
+            )
+
+            recognized,  intencao = classifier.classify()
+
+            print(recognized, intencao)
     except Exception as e:
-        print(f'Erro ao executar fluxo:\n{e}')
+        print(f'Erro ao executar fluxo:\n{e.__traceback__}')
 
 if __name__ == '__main__':
     main()
