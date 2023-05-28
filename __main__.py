@@ -3,7 +3,13 @@ from classificador import Classifier
 
 from utils import *
 from data import *
-from data2 import *
+import os
+
+
+green = '\033[32m'
+yellow = '\033[33m'
+blank = '\33[0m'
+
 
 def main():
     automaton = DeterministicFiniteAutomaton(
@@ -14,7 +20,8 @@ def main():
         transitions
     )
 
-    print('\n')
+    os.system('cls' if os.name == 'nt' else 'clear')
+
     try:
         for phrase in input_phrases:
             phrase = automaton.format_phrase(phrase)
@@ -22,22 +29,28 @@ def main():
 
             print_affirmative(phrase) if recognized else print_negative(phrase) 
 
-            tokens = automaton.applyStemmer(phrase)
-            print(f'tokens: {tokens}')
+            if recognized:
+                tokens = automaton.applyStemmer(phrase)
+                print(blank+f"\ntokens: {tokens}")
 
-            classifier = Classifier(
-                start_state=start_state2,
-                accept_states=accept_states2,
-                states=states2,
-                tokens=tokens,
-                transitions=transitions2
-            )
+                classifier = Classifier(
+                    start_state=start_state2,
+                    accept_states=accept_states2,
+                    states=states2,
+                    tokens=tokens,
+                    transitions=transitions2
+                )
 
-            recognized,  intencao = classifier.classify()
+                recognized,  intencao = classifier.classify()
 
-            print(recognized, intencao)
+                if recognized:
+                    print(green+f'intenção reconhecida: {intencao}')
+                else:
+                    print(yellow+f'nao reconhecido')
+
+                print(blank+f'------------------------------------------------------------------')
     except Exception as e:
-        print(f'Erro ao executar fluxo:\n{e.__traceback__}')
+        print(yellow+f'Erro ao executar fluxo:\n{e.__traceback__}')
 
 if __name__ == '__main__':
     main()

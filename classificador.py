@@ -1,4 +1,4 @@
-from data2 import classificacoes
+from data import classificacoes
 
 class Classifier:
     def __init__(self, states:list, tokens:list,
